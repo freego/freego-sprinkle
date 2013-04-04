@@ -1,0 +1,14 @@
+# include all packages
+Dir[File.join(File.dirname(__FILE__), 'packages/**/*.rb')].each { |lib| require lib }
+
+# SSH in as 'root'. Probably not the best idea.
+set :user, 'root'
+set :password, 'your_password'
+
+# Just run the commands since we are 'root'.
+set :run_method, :run
+
+# Be sure to fill in your server host name or IP.
+role :app, 'your.host'
+
+default_run_options[:pty] = true
