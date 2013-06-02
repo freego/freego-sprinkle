@@ -1,7 +1,7 @@
-package :imagemagick do
-  description 'Imagemagick for rails apps'
+package :mongodb do
+  description 'MongoDB Database'
 
-  packages =  %w{imagemagick libmagickwand-dev}
+  packages = %w{mongodb}
 
   noop do
     pre :install, 'apt-get update'

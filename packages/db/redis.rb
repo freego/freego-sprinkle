@@ -1,7 +1,7 @@
-package :imagemagick do
-  description 'Imagemagick for rails apps'
+package :redis do
+  description 'Redis Database'
 
-  packages =  %w{imagemagick libmagickwand-dev}
+  packages = %w{redis-server}
 
   noop do
     pre :install, 'apt-get update'

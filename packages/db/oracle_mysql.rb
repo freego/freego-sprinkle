@@ -7,7 +7,7 @@ package :oracle_mysql, :provides => :mysql do
     pre :install, 'apt-get update'
   end
 
-  packages.each { |p| apt p }
+  apt packages
 
   verify do
     packages.each { |p| has_apt p }

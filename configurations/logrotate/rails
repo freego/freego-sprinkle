@@ -1,0 +1,9 @@
+/var/www/*/shared/log/*.log {
+    compress
+    copytruncate
+    monthly
+    dateext
+    delaycompress
+    missingok
+    rotate 6
+}
