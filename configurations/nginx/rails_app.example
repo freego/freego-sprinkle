@@ -1,0 +1,49 @@
+#
+# example configuration for ruby on rails app
+#
+
+upstream appname_local {
+  server 127.0.0.1:0000;
+}
+
+server {
+  listen 80;
+  server_name www.appname.com;
+
+  access_log /var/www/appname/current/log/access.log;
+  error_log /var/www/appname/current/log/error.log;
+
+  root   /var/www/appname/current/public/;
+  index  index.html;
+
+  client_max_body_size 2M;
+
+  location / {
+    proxy_set_header  X-Real-IP  $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    if (-f $request_filename/index.html) {
+      rewrite (.*) $1/index.html break;
+    }
+
+    if (-f $request_filename.html) {
+      rewrite (.*) $1.html break;
+    }
+
+    if (!-f $request_filename) {
+      proxy_pass http://appname_local;
+      break;
+    }
+  }
+
+  location ~ ^/assets/ {
+    # expire headers
+    expires max;
+    add_header Cache-Control public;
+    add_header ETag "";
+    # gzip static
+    gzip_static on; # to serve pre-gzipped version
+    break;
+}
