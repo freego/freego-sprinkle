@@ -11,14 +11,14 @@ package :shorewall do
   apt 'shorewall'
 
   files.each do |file|
-    transfer "./configurations/shorewall/#{file}", '/etc/shorewall/'
+    transfer "./configurations/shorewall/#{file}", "/etc/shorewall/#{file}.example"
   end
   replace_text "startup=0", "startup=1", "/etc/default/shorewall"
 
   verify do
     has_apt "shorewall"
     files.each do |file|
-      has_file "/etc/shorewall/#{file}"
+      has_file "/etc/shorewall/#{file}.example" or has_file "/etc/shorewall/#{file}"
     end
     file_contains "/etc/default/shorewall", "startup=1"
   end

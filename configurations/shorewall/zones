@@ -9,5 +9,5 @@
 ###############################################################################
 #ZONE   TYPE            OPTIONS         IN                      OUT
 #                                       OPTIONS                 OPTIONS
-#fw      firewall
-#net     ipv4
+fw      firewall
+net     ipv4

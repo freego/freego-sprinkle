@@ -13,8 +13,8 @@ package :nginx, :provides => :web_server do
 
   runner 'mkdir -p /etc/nginx/sites-available'
   runner 'mkdir -p /etc/nginx/sites-enabled'
-  transfer './configurations/nginx/nginx.conf.example', '/etc/nginx/'
-  transfer './configurations/nginx/rails_app.example', '/etc/nginx/sites-available/'
+  transfer './configurations/nginx/nginx.conf', '/etc/nginx/nginx.conf.example'
+  transfer './configurations/nginx/rails_app', '/etc/nginx/sites-available/rails_app.example'
 
   verify do
     has_apt 'nginx'

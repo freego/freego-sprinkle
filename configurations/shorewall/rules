@@ -15,11 +15,11 @@
 #                                                       PORT    PORT(S)         DEST            LIMIT           GROUP
 SECTION NEW
 
-#Web(ACCEPT) net       $FW
-#SSH(ACCEPT) net       $FW
+Web(ACCEPT) net       $FW
+SSH(ACCEPT) net       $FW
 
 # Drop Ping from the "bad" net zone.. and prevent your log from being flooded..
-#Ping(DROP)      net             $FW
+Ping(DROP)      net             $FW
 
 # Permit all ICMP traffic FROM the firewall TO the net zone
-#ACCEPT          $FW             net             icmp
+ACCEPT          $FW             net             icmp

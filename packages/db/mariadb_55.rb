@@ -9,7 +9,7 @@ package :mariadb_55, :provides => :mysql do
     pre :install, 'apt-get update'
   end
 
-  transfer './configurations/mysql/my.cnf.example', '/etc/mysql/'
+  transfer './configurations/mysql/my.cnf', '/etc/mysql/my.cnf.example'
 
   verify do
     has_apt 'mariadb-server'
