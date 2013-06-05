@@ -1,0 +1,4 @@
+#check process rails_app with pidfile /var/www/rails_app/shared/pids/thin.3040.pid
+#  start = "/bin/su - deployer -c 'cd /var/www/rails_app/current && bundle exec thin restart --tag rails_app -C config/thin/production.yml'"
+#  stop = "/bin/su - deployer -c 'cd /var/www/rails_app/current && bundle exec thin stop -C config/thin/production.yml'"
+#  if totalmem is greater than 200.0 MB for 40 cycles then restart

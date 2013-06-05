@@ -8,6 +8,7 @@ policy :ubuntu_1204_standard_rails_stack, :roles => :app do
   requires :mongodb
   requires :nginx
   requires :shorewall
+  requires :monit
 end
 
 deployment do
