@@ -2,7 +2,7 @@
 # Essential setup for rails app hosting, compile RVM's Ruby and common gems
 #
 package :rails_ubuntu_base_setup do
-  description "Essential setup for rails app hosting, compile RVM's Ruby and common gems"
+  description "Essential setup for rails app hosting, compiling RVM's Ruby and most common gems"
 
   requires :deployer_user, :ubuntu_common, :git
 
