@@ -1,6 +1,5 @@
 #
-# NOTE:
-# you need to manually check and enable configurations in /etc/monit/conf.d
+# UFW firewall
 #
 package :ufw do
 
