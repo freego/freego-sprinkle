@@ -3,8 +3,9 @@
 #
 package :ubuntu_common do
 
-  packages = %w{ubuntu-minimal wget screen curl vim openssh-client openssh-server
-                bash-completion logrotate landscape-common links2}
+  packages = %w{ubuntu-minimal wget screen curl vim openssh-client
+                openssh-server bash-completion logrotate landscape-common links2
+                unattended-upgrades}
 
   noop do
     pre :install, 'apt-get update'
