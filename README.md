@@ -25,7 +25,10 @@ Please see <a href="https://github.com/crafterm/sprinkle/blob/master/README.mark
     # just ensure root user can login via ssh.
 
     # on the local machine:
+
     gem install sprinkle
+    git clone git@github.com:freego/freego-sprinkle.git
+    cd freego-sprinkle
     cp deploy.rb.example deploy.rb
     # edit deploy.rb with your server root credentials.
     # edit policies/ubuntu_1204_standard_rails_stack.rb and enable what you want.
