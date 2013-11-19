@@ -4,7 +4,7 @@
 package :rails_ubuntu_base_setup do
   description "Essential setup for rails app hosting, compiling RVM's Ruby and most common gems"
 
-  requires :deployer_user, :ubuntu_common, :git
+  requires :deployer_user, :ubuntu_common, :git, :logrotate_rails
 
   username = 'deployer'
   libs = %w{build-essential libreadline6-dev zlib1g zlib1g-dev libyaml-dev autoconf
@@ -18,6 +18,7 @@ package :rails_ubuntu_base_setup do
 
   runner "mkdir -p /var/www"
   runner "chown -R #{username}:#{username} /var/www/"
+  transfer './configurations/logrotate/rails', '/etc/logrotate.d/rails'
 
   verify do
     libs.each { |p| has_apt p }
