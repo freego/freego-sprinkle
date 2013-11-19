@@ -2,25 +2,35 @@
 # example configuration for ruby on rails app
 #
 
-# rails servers (e.g. thin)
+# rails micro servers (e.g. thin)
 upstream appname_local {
-  server 127.0.0.1:0000;
+  server unix:/tmp/some.sock;
+  #server 127.0.0.1:0000;
 }
 
 server {
+  # port to listen on. Can also be set to an IP:PORT
   listen 80;
+  # SSL
+  #listen 443;
+
+  # sets the domain[s] that this vhost server requests for
   server_name www.appname.com;
 
-  access_log /var/www/appname/current/log/access.log;
-  error_log /var/www/appname/current/log/error.log;
+  # document root
+  root /var/www/appname/current/public/;
+  #index index.html;
 
-  root   /var/www/appname/current/public/;
-  index  index.html;
+  # vhost specific logs
+  access_log $document_root/log/access.log;
+  error_log $document_root/log/error.log;
 
-  # increase for big files upload
-  client_max_body_size 5M;
+  # Set the max size for file uploads to 50Mb
+  client_max_body_size 50M;
 
-  # handle maintenance page with capistrano
+  # this rewrites all the requests to the maintenance.html
+  # page if it exists in the doc root. This is for capistrano's
+  # disable web task
   if (-f $document_root/system/maintenance.html) {
     return 503;
   }
@@ -31,16 +41,35 @@ server {
   }
 
   location / {
+    # determines in what cases the request will be transmitted to the next server
     proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
-    proxy_set_header  X-Real-IP  $remote_addr;
-    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    # needed to forward user's IP address to rails
+    proxy_set_header X-Real-IP  $remote_addr;
+    # needed for HTTPS
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
+    #proxy_max_temp_file_size 0;
 
+    # If the file exists as a static file serve it directly without
+    # running all the other rewite tests on it
+    if (-f $request_filename) {
+      break;
+    }
+
+    # check for index.html for directory index
+    # if its there on the filesystem then rewite
+    # the url to add /index.html to the end of it
+    # and then break to send it to the next config rules.
     if (-f $request_filename/index.html) {
       rewrite (.*) $1/index.html break;
     }
 
+    # this is the meat of the rails page caching config
+    # it adds .html to the end of the url and then checks
+    # the filesystem for that file. If it exists, then we
+    # rewite the url to have explicit .html on the end
+    # and then send it on its way to the next config rule.
     if (-f $request_filename.html) {
       rewrite (.*) $1.html break;
     }
@@ -51,12 +80,30 @@ server {
     }
   }
 
-  location ~ ^/assets/ {
-    # expire headers
-    expires max;
+  #error_page 500 502 503 504 /500.html;
+  #location = /500.html {
+  #  root /var/www/appname/current/public;
+  #}
+
+  # tipical assets paths for rails apps
+  location ~ ^/(spree|system|assets)/ {
+    root $document_root/current/public;
+
+    # Per RFC2616 - 1 year maximum expiry
+    expires 1y;
     add_header Cache-Control public;
+
+    # Some browsers still send conditional-GET requests if there's a
+    # Last-Modified header or an ETag header even if they haven't
+    # reached the expiry date sent in the Expires header.
     add_header ETag "";
-    gzip_static on; # to serve pre-gzipped version
+    add_header Last-Modified "";
+
+    # to serve pre-gzipped version
+    # TODO not for images?
+    gzip_static on;
+
+    access_log off;
     break;
   }
 }
