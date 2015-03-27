@@ -1,11 +1,11 @@
-# Our Sprinkle recipes
+# Our (old) Sprinkle recipes
 
-We use these scripts for quick and reproducible initial setup of our Ubuntu
+We used these scripts for quick and reproducible initial setup of our Ubuntu
 Linux-based servers.
-Desired packages will be installted and some example config files will be copied
+Desired packages will be installed and some example config files will be copied
 (but not automatically enabled).
 
-This is currently for Ubuntu 12.04 LTS, some changes may be needed for other
+This was for Ubuntu 12.04 LTS, some changes may be needed for other
 debian based systems.
 
 ## SprinkWAT.
